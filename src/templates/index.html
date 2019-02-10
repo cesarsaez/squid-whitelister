@@ -1,0 +1,77 @@
+{% extends 'layout.html' %}
+{% block body %}
+
+<div class="row">
+    <div class="col-md-5">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            {% for message in messages %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+            
+            <div class="card card-body">
+            Add or remove entries to the whitelist:
+                    <form action="/add_exception" method="POST" >
+                        <div class="form-group">
+                            <input type="text" name="fqdn_add" placeholder="FQDN" class="form-control">
+                        </div>
+                        <div class="form-group">
+                        <button type="submit" class="btn btn-success btn-block">
+                            Add Exception
+                        </button>
+                        </div>
+                    </form>
+                    <form action="/remove_exception" method="POST" >
+                        <div class="form-group">
+                            <input type="text" name="fqdn_remove" placeholder="FQDN" class="form-control">
+                        </div>
+                        <div class="form-group">
+                        <button type="submit" class="btn btn-danger btn-block">
+                            Remove Exception
+                        </button>
+                        </div>
+                    </form>
+                    Squid Service operations:
+                    <form action="/squid_reload" method="POST" >
+                        <div class="form-group">
+                        <button type="submit" class="btn btn-warning btn-block">
+                            Reload Squid service
+                        </button>
+                        </div>
+                    </form>
+                    <form action="/squid_status" method="POST" >
+                        <div class="form-group">
+                        <button type="submit" class="btn btn-secondary btn-block">
+                            Status of Squid service
+                        </button>
+                        </div>
+                    </form>
+            </div>
+        </div>
+    
+    <div class="col-md-7">
+            <table class="table table-striped table-bordered bg-white table-sm">
+                    <thead>
+                        <tr>
+                            <td>Whitelisted</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for exception in exceptions %}
+                            <tr>
+                               <td>{{ exception }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+    </div>
+</div>
+
+{% endblock %}
